@@ -1,3 +1,5 @@
+**Link is broken. Sorry... Please browse from https://hackmd.io/@elkurin/BkpclhzOh**
+
 elkurin's daily study notes
 
 ## List of daily notes
