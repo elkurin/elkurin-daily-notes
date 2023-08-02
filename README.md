@@ -8,6 +8,9 @@ Notes are my own, and do not represent any organization.
 Some of the posts are in English and others are in Japanese.  
 I appreciate any feedback or corrections that you may have.
 
+Chromiumブログです。主にChromiumについて話し、たまにC++の仕様について、稀に僕の趣味について書きます。  
+日本語と英語が混在しています。間違いを見つけたりフィードバックがあったりする場合は言っていただけると喜びます。
+
 ## About me
 Hi, I'm elkurin, a ChromeOS engineer creating browser.  
 I had been working on: Graphics, Window Manager, Browser Loading/Launching, Memory Performance, Text Input, WebWorker.
