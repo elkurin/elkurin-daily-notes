@@ -1,6 +1,6 @@
 # base::small_map
 
-[Chromium Maps](/szPe4BDiSAqq2Lk1DSycHw)でいろいろなmapの比較を確認した。  
+[Chromium Maps](/docs/day39.md)でいろいろなmapの比較を確認した。  
 その中で[base::small_map](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:base/containers/small_map.h)だけよくわからなかったので、読んでみる。
 
 ## コンセプト
