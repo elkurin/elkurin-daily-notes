@@ -1,9 +1,9 @@
-# Chromium Blog
+# Chromium Daily Blog
 
 **Link is broken. Sorry... Please browse from https://hackmd.io/@elkurin/BkpclhzOh**
 
-This is a study blog mainly based on [Chromium](https://source.chromium.org/chromium/chromium/src) written by elkurin.  
-Also there are some random off-topic notes.  
+This is a study blog updated on daily-basis written by elkurin.  
+Most of them are based on [Chromium](https://source.chromium.org/chromium/chromium/src), and there are some random off-topic notes.  
 Notes are my own, and do not represent any organization.  
 Some of them are written in English and others are in Japanese.  
 Appreciate to hear any feedback/correction.
@@ -12,7 +12,7 @@ Appreciate to hear any feedback/correction.
 Hi, I'm elkurin, a ChromeOS engineer creating browser.  
 I had been working on: Graphics, Window Manager, Browser Loading/Launching, Memory Performance, Text Input, WebWorker.
 
-## List of daily notes
+## Table of Contents
 Day 1: [Compositor Lock](/day1.md)  
 Day 2: [Chromium の CHECK macro](/day2.md)  
 Day 3: [ChromeOS compositing - How Frame is Sent](/day3.md)  
