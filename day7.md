@@ -1,0 +1,54 @@
+# Configure-Ack
+
+Configure-Ack is a mechanism to synchronize Client and Server to produce visually correct windows recently implemented by my neighbor.  
+Reading the code to understand deeper for my study.
+
+## What is Configure and AckConfigure
+Client and Server needs to agree upon the window state and bounds to synchronize the states because Client is responsible for producing frames and Server is responsible for compositing received frames. If there is a mismatch between Client and Server, the frame looks incorrect.
+
+However, Client and Server works independently and asynchronously, there is always a risk that Client and Server does not have a same state.  
+It may casue incorrect behavior for example, Client maximizes the window and thinks it's maximized while Server thinks it cannot be maximized right now for some reasons and stays in normal window state.
+
+There is a mechanism to avoid such mismatch.  
+When Server changes the state, Server sends [Configure](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:out/chromeos-Debug/gen/third_party/wayland-protocols/src/stable/xdg-shell/xdg-shell-server-protocol.h;l=1055;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) message with the current state on Server to Client. Client sends back [AckConfigure](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:out/Debug/gen/third_party/wayland-protocols/src/stable/xdg-shell/xdg-shell-client-protocol.h;l=1216;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) to Server when Client acknowledges the updated configure. Server receives the AckConfigure message and then utilize the frame sent from Client. At this point, the frame is guaranteed to be in the correct configure (window state, bounds).
+
+## What happens on multiple Configure / AckConfigure
+Still there could be confusing cases, new Configure is sent while waiting for AckConfigure.  
+To support such case, the identical number `serial` is set to each Configure.  
+This `serial` is used to understand which Configure events that AckConfigure corresponds to.  
+
+As you can see from the implementation of [ShellSurface::AcknowledgeConfigure](https://source.chromium.org/chromium/chromium/src/+/main:components/exo/shell_surface.cc;l=151-166;drc=85a75213fb807442f7e48498cccd2cfe366992e4), AckConfigure is not necessarily sent back for every Configure. See [Throttling](https://hackmd.io/@elkurin/ByMSD1UL2#Throttling) section.
+
+## When to AckConfigure
+Configure state sent to Client transitions 4 states:
+1. [`pending_configure_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=440;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80): Configure pending. Initial state
+2. [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80): Configure requested, stored as circular_deque.
+3. [`applied_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=610;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80): Asked browser to apply
+4. [`latched_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=615;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80): frame is produced with this state
+
+Configure sent from Client is initially stored in [`pending_configure_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=440;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80), and it will move to [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) circular_deque. These requests will be asked to apply to the browser one by one. Current requested state is stored in [`applied_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=610;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80). When the frame asked to the browser is produced, the state is moved to [`latched_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=615;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) and call AckConfigure.
+
+So, when Server receives AckConfigure, the frame is guaranteed to be produced from the correct confiure.
+
+### Detailed flow
+Let's look at WaylandToplevelWindow case.
+
+Server sends Configure and it's received at [ConfigureAuraTopLevel](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/xdg_toplevel_wrapper_impl.cc;l=299;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) which update [`pending_configure_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=440;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) to the state passed from Server.
+
+On [ProcessPendingConfigureState](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1017;drc=66941d1f0cfe9155b400aef887fe39a403c1f518), the pending configure state is requested by [RequestState](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1065;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) and moved to [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80). Note that `in_flight_requests_` may have more than one requests, so this is a circular_deque waiting to be applied. [StateRequest](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.h;l=478;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) contains `serial` of Configure and `viz_seq`. `viz_seq` is an identical number for each viz sequence. `applied` property will be set to true when StateRequest is applied.
+
+Then [MaybeApplyLatestStateRequest](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1220;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) applies the latest [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) and copied to [`applied_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=610;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80). Note that the latest state is still in [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) circular_deque.  
+[`applied_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=610;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) is referred for example on [GetBoundsInDIP](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=378;drc=66941d1f0cfe9155b400aef887fe39a403c1f518).  On updating `applied_state_`, [WindowTreeHostPlatform::OnStateUpdate](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/aura/window_tree_host_platform.cc;l=303;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) is called and ask the browser to apply the state change for example from [WindowTreeHostPlatform::OnBoundsChanged](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/aura/window_tree_host_platform.cc;l=196;drc=66941d1f0cfe9155b400aef887fe39a403c1f518). Then viz will produce frame with the state in `applied_state_`.
+
+The produced frame will come back to [WaylandFrameManger::MaybeProcessPendingFrame](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_frame_manager.cc;l=138;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) (see [Note: How frame is sent](https://hackmd.io/@elkurin/SyzSuVlLh) for this flow). [WaylndToplevelWindow::OnSequencePoint](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_toplevel_window.cc;l=597;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) and [WaylandWindow::ProcessSequencePoint](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1111;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) is called with `viz_seq` value so that WaylandWindow can know which sequence and which configure this frame is produced from. Find the requests with same `viz_seq` from [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80), remove it from [`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) and call [LatchStateRequest](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1206;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) with updating [`latched_state_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=615;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80). 
+
+This will call [AckConfigure](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_toplevel_window.cc;l=676;drc=66941d1f0cfe9155b400aef887fe39a403c1f518) for `serial` corresponds to `viz_seq`.
+
+## Throttling
+[`in_flight_requests_`](https://source.chromium.org/chromium/chromium/src/+/main:ui/ozone/platform/wayland/host/wayland_window.h;l=620;drc=ca7a24ad6ebc4c40e8f41ad7c750c77509a97e80) is a circular_deque. These requests are sent to the browser one by one, but we only send the latest one, not as a queue. This is because we don't need to handle old configure, it's useless.  
+This is throttling.  
+Because of this, it sometimes does not send AckConfigure for every Configure.
+
+## Note
+`serial` -1 is used for state sent from Client.  
+[RequestStateFromClient](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:ui/ozone/platform/wayland/host/wayland_window.cc;l=1058;drc=66941d1f0cfe9155b400aef887fe39a403c1f518).
