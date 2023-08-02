@@ -6,7 +6,7 @@ baseディレクトリの中を散歩していたら[lru_cache.h](https://source
 **L**east **R**ecently **U**sed **Cache**。  
 キャッシュ容量がパンパンになったときに、使用履歴が一番古いものを消す方式のキャッシュのこと。
 いろんなところで使われている有効なコンセプト。  
-最近だと[Frame Eviction](/p7Xlv09bTgKBczGScYAnJA)のノートで読んだ[FrameEvictionManager](https://source.chromium.org/chromium/chromium/src/+/main:components/viz/client/frame_eviction_manager.h)で`unlocked_frames_`のリストを管理するために使用しているのを見た。  
+最近だと[Frame Eviction](/docs/day37.md)のノートで読んだ[FrameEvictionManager](https://source.chromium.org/chromium/chromium/src/+/main:components/viz/client/frame_eviction_manager.h)で`unlocked_frames_`のリストを管理するために使用しているのを見た。  
 上の例では自前で実装しているが、Chromiumには[base::LRUCache](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:base/containers/lru_cache.h)というデータ構造も実装されている。  
 以下のように書くと使える。
 ```cpp=
