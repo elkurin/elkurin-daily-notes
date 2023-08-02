@@ -1,3 +1,5 @@
+# absl::optional
+
 optional型とは有効な値Tまたは無効な値を指定できる型。
 例えば、ある処理が成功したときはその値を、失敗したときはnullを返すといったことができる。
 Chromiumでは昔Chromium独自の実装である[base::optional](https://chromium.googlesource.com/chromium/src/+/71.0.3578.80/docs/optional.md)を使用していたが、何年か前に一斉工事が行われ[absl::optional](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:third_party/abseil-cpp/absl/types/optional.h)に置き換わった。
