@@ -1,6 +1,6 @@
 # absl::optional をもっと読もう
 
-昨日の[absl::optional](/day63.md)ではctor、アクセスなどのメソッドの実装テンプレートを読んだ。  
+昨日の[absl::optional](/docs/day63.md)ではctor、アクセスなどのメソッドの実装テンプレートを読んだ。  
 今日はさらにoptional_internalの中身と、データをどう格納しているかを確認する。
 
 ## optional_dataの型
@@ -19,7 +19,7 @@ class optional_data_dtor_base<T, true> {
 template <typename T, bool unused = std::is_trivially_destructible<T>::value>
 class optional_data_dtor_base {
 ```
-ここになり、もし`std::is_trivially_destructible<T>::value`がtrueならより特殊化されている`<T, true>`の方が選ばれ、そうでなかったら`bool unused = std::is_trivially_destructible<T>::value`が使われる。(参照：[特殊化templateの順序](/U0xJunbTS3aZLNlr8ODeeg))  
+ここになり、もし`std::is_trivially_destructible<T>::value`がtrueならより特殊化されている`<T, true>`の方が選ばれ、そうでなかったら`bool unused = std::is_trivially_destructible<T>::value`が使われる。(参照：[特殊化templateの順序](/docs/day42.md))  
 
 この階層を設けることでTがtrivially destructibleかどうかで実装を分けることが出来た。
 では１つ上の`optional_data`階層では何で分岐しているかというと  
@@ -56,7 +56,7 @@ bool engaged_;
 T data_;
 ```
 
-constructしたくないならplacement new([Chromium の singleton](/uJ6BDMFwStS3LSN9NTeP8w)で言及)の出番では？  
+constructしたくないならplacement new([Chromium の singleton](/docs/day9.md)で言及)の出番では？  
 実際[boost::optional](https://www.boost.org/doc/libs/1_34_1/boost/optional/optional.hpp)では[aligned_storage](https://cpprefjp.github.io/reference/type_traits/aligned_storage.html)タイプとともにこの方法が取られている。  
 ```cpp=
 template<class T>
@@ -82,7 +82,7 @@ boostのコーディングスタイルなんかきしょいね。
 
 らしい。(constexprでoptional宣言したいことある？)  
 いずれにしてもplacement newのコードなんか読みにくくて汚い。  
-一方unionだとどうなるか。[`union`](https://en.cppreference.com/w/cpp/language/union)は[base::small_map](/lS4DQhxISa-bvzFelDKCcA)のノートで言及したが複数の型のどちらかを持つ型。今回の使用例だと有効な値`data_`か空っぽの値`dummy_`かのどちらかとなっている。サイズはT型の領域とっている。  
+一方unionだとどうなるか。[`union`](https://en.cppreference.com/w/cpp/language/union)は[base::small_map](/docs/day44.md)のノートで言及したが複数の型のどちらかを持つ型。今回の使用例だと有効な値`data_`か空っぽの値`dummy_`かのどちらかとなっている。サイズはT型の領域とっている。  
 ```cpp=
 struct empty_struct {};
 
