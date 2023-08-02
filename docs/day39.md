@@ -12,7 +12,7 @@ C++の標準ライブラリには [`std::map`](https://cpprefjp.github.io/refere
 - [`std::map`](https://cpprefjp.github.io/reference/map/map.html)　→　赤黒木
 - [`std::unordered_map`](https://cpprefjp.github.io/reference/unordered_map/unordered_map.html)　→　ハッシュテーブル
 - [`base::flat_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/flat_map.h)　→　ソートした配列
-- [`base::small_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/small_map.h)　→　インラインバッファー？（map,unordered_mapにオーバーフローする）。コードを読まないとわからない…　→読みました [ノートはこちら](/docs/day40.md)
+- [`base::small_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/small_map.h)　→　インラインバッファー？（map,unordered_mapにオーバーフローする）。コードを読まないとわからない…　→読みました [ノートはこちら](/docs/day44.md)
 
 ### Speed Performance
 [`std::unordered_map`](https://cpprefjp.github.io/reference/unordered_map/unordered_map.html)は insert/delete がO(1)でできるが、それほど大きくないテーブルでは [`std::map`](https://cpprefjp.github.io/reference/map/map.html) と大差ない。  
