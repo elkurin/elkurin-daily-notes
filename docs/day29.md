@@ -1,8 +1,8 @@
 # TaskEnvironment in Chromium
 
-以前 [Task Runner in Chromium](/V20PsjhqT7a7AJ1_zE5kMg) のノートでTaskをPostする方法について言及した。  
+以前 [Task Runner in Chromium](/docs/day5.md) のノートでTaskをPostする方法について言及した。  
 これをテストでも使用したい場合もある。  
-例えばテスト対象が非同期な操作を行っており、その結果をチェックしたいときなど、[RunLoop](/3nWtoOH2QW28njOfcbvSyw) を使うことがよくある。  
+例えばテスト対象が非同期な操作を行っており、その結果をチェックしたいときなど、[RunLoop](/docs/day13.md) を使うことがよくある。  
 この時、何も設定しないでunit testを走らせるとThreadPoolやTaskRunnerがなくてRunLoopなどは走らない。  
 それを簡単にセットしてくれるのが[TaskEnvironment](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:base/test/task_environment.h)。
 
