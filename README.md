@@ -1,6 +1,6 @@
 # Chromium Daily Blog
 
-**Link is broken. Sorry... Please browse from https://hackmd.io/@elkurin/BkpclhzOh**
+**Migrated from https://hackmd.io/@elkurin/BkpclhzOh**
 
 This is a study blog updated on daily-basis written by elkurin.  
 Most of them are based on [Chromium](https://source.chromium.org/chromium/chromium/src), and there are some random off-topic notes.  
