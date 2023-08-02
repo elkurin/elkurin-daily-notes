@@ -5,8 +5,8 @@
 This is a study blog updated on daily-basis written by elkurin.  
 Most of them are based on [Chromium](https://source.chromium.org/chromium/chromium/src), and there are some random off-topic notes.  
 Notes are my own, and do not represent any organization.  
-Some of them are written in English and others are in Japanese.  
-Appreciate to hear any feedback/correction.
+Some of the posts are in English and others are in Japanese.  
+I appreciate any feedback or corrections that you may have.
 
 ## About me
 Hi, I'm elkurin, a ChromeOS engineer creating browser.  
