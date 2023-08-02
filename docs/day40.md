@@ -1,3 +1,5 @@
+# base::flat_map + 戻り値の型推論
+
 昨日のノート[Chromium Maps](/szPe4BDiSAqq2Lk1DSycHw)で各Mapの実装についてまとめた。  
 今日はその中で[`base::flat_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/flat_map.h)を読んでみる。
 
