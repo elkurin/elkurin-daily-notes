@@ -1,10 +1,10 @@
 # Resource Pool
 
-In the [Frame Eviction](/p7Xlv09bTgKBczGScYAnJA) note, we discussed how to discard resources wisely. Such action is tracked by [ResourcePool](https://source.chromium.org/chromium/chromium/src/+/main:cc/resources/resource_pool.h) which oversees resources usage from both renderer and viz.  
+In the [Frame Eviction](/docs/day37.md) note, we discussed how to discard resources wisely. Such action is tracked by [ResourcePool](https://source.chromium.org/chromium/chromium/src/+/main:cc/resources/resource_pool.h) which oversees resources usage from both renderer and viz.  
 This note aims to understand the ResourcePool's responsibility and how it works by reading codes.  
 
 ## Overview
-[ResourcePool](https://source.chromium.org/chromium/chromium/src/+/main:cc/resources/resource_pool.h) is a resource tracker in cc (see [Graphic Pipeline on Chrome Compositor (cc)](/5ikmEAt9TVGbg1NrYA1EJw)).  
+[ResourcePool](https://source.chromium.org/chromium/chromium/src/+/main:cc/resources/resource_pool.h) is a resource tracker in cc (see [Graphic Pipeline on Chrome Compositor (cc)](/docs/day43.md)).  
 It keeps track of which resources (such as tiles) are used by the renderer nd which are held by viz.
 
 For example, [TileManager::CreateRasterTask](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:cc/tiles/tile_manager.cc;l=1256;drc=bc1deb5c0b4cdbc7a83398e8fc8e09d00edbc936) aquires a resource from [AcquireResource](https://source.chromium.org/chromium/chromium/src/+/main:cc/resources/resource_pool.cc;l=184;drc=8529cb55df3c89cace2cf3f828314d46a030bcad) and this resource is being used to [AcquireBufferForRaster](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:cc/raster/raster_buffer_provider.h;l=55;drc=bc1deb5c0b4cdbc7a83398e8fc8e09d00edbc936).  
