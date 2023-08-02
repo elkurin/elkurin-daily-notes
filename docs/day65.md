@@ -1,12 +1,12 @@
 # std::optional vs absl::optional
 
-[absl::optional](/day63.md)と[absl::optional をもっと読もう](/day64.md)のノートでoptionalの実装を読んできた。  
+[absl::optional](/docs/day63.md)と[absl::optional をもっと読もう](/docs/day64.md)のノートでoptionalの実装を読んできた。  
 Chromiumでは以前base::optionalを使っていたところから2年前くらいに移行が起きたが、その際std::optionalではなくabslライブラリを選択している。  
 その後現在も[std::optionalはban](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++-features.md#std_optional-banned)されている。  
 まだ実装されていないライブラリをChromium独自の実装でなんとかするみたいなことはあるが、どちらも選べるのに標準ライブラリを使っていないのはなぜだろう？  
 
 ## 主な理由：チェックの有無
-[Chromium の CHECK macro](/day2.md)について触れたが、同様のチェック機能がabslライブラリにもある。  
+[Chromium の CHECK macro](/docs/day2.md)について触れたが、同様のチェック機能がabslライブラリにもある。  
 例えば
 ```cpp=
 const T* operator->() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
