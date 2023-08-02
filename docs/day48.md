@@ -18,7 +18,7 @@ Each layer is an independent unit in the compositor.
 All of them inherits [cc::Layer](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:cc/layers/layer.h;l=87;drc=fdfd85f836e0e59c79ed9bf6d527a2b8f7fdeb6e).  
 Each variant represents the type of layer such as TextureLayer, VideoLayer, SolidColorLayer.  
 
-As described in [Graphic Pipeline on Chrome Compositor (cc)](/5ikmEAt9TVGbg1NrYA1EJw) note, we have Main thread and Compositor thread.  
+As described in [Graphic Pipeline on Chrome Compositor (cc)](/docs/day43.md) note, we have Main thread and Compositor thread.  
 
 ![](https://hackmd.io/_uploads/SkcM2G2F3.png)
 (Cite from [How cc Works](https://source.chromium.org/chromium/chromium/src/+/main:docs/how_cc_works.md))
