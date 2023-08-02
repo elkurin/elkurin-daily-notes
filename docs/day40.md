@@ -1,6 +1,6 @@
 # base::flat_map + 戻り値の型推論
 
-昨日のノート[Chromium Maps](/szPe4BDiSAqq2Lk1DSycHw)で各Mapの実装についてまとめた。  
+昨日のノート[Chromium Maps](/docs/day39.md)で各Mapの実装についてまとめた。  
 今日はその中で[`base::flat_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/flat_map.h)を読んでみる。
 
 ## flat_map クラス
@@ -94,7 +94,7 @@ tree::unsafe_emplaceの中身は`body_.emplace`。ここで`body_`はコンテ�
 flat_mapは中身の実装はvectorということになっていたはずだが、この部分はContainerというtemplate引数によって指定できるようになっている。  
 これは、Containerの中身がstd::arrayになっている[`base::fixed_flat_map`](https://source.chromium.org/chromium/chromium/src/+/main:base/containers/fixed_flat_map.h;l=89;drc=7ca1c1faf3ec5ff1c1faba93f7260d0c71c38d5e)を実装するためっぽい。実際[Containerが導入されて](https://chromium-review.googlesource.com/c/chromium/src/+/2510249)から10日後に[fixed_flat_mapが実装](https://chromium-review.googlesource.com/c/chromium/src/+/2532247)されいている。  
 
-ただこの場合、flat_mapのContainerにオレオレ実装を挿入して計算量やメモリ使用量など[Chromium Maps](/szPe4BDiSAqq2Lk1DSycHw)で確認した性能から破壊したりできちゃうのでは？
+ただこの場合、flat_mapのContainerにオレオレ実装を挿入して計算量やメモリ使用量など[Chromium Maps](/docs/day39.md)で確認した性能から破壊したりできちゃうのでは？
 
 
 ## flat_set
