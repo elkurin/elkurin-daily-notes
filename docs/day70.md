@@ -5,7 +5,7 @@ Perfect Forwardingは日本語では「完全転送」と呼ぶらしい。
 
 ## 導入：T&&
 今日のChromium Code Reading会で出た話題。  
-先日読んだ[absl::optional](/G7kaKvL5R8C4M9Cuqy2Cgg)の中のコードで以下のような形が合った。
+先日読んだ[absl::optional](/docs/day63.md)の中のコードで以下のような形が合った。
 ```cpp=
 template <typename T>
 constexpr optional<typename std::decay<T>::type> make_optional(T&& v) {
