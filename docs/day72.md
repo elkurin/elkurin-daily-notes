@@ -47,7 +47,7 @@ Swiss tables ではハッシュ値関数は64bits値を出力し、以下の2つ
 このハッシュ値でどうやって検索するか？  
 検索したいkeyに対して生成された64bitsハッシュ値について。まず最初の57bits分にあたるH1を使って"bucket chain"の先頭を探す。  
 残りの7bitsからなるH2はmaskとする。  
-**S**treaming **S**IMD **E**xtension a.k.a [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)というSIMD(**S**ingle **I**nstruction **M**ultiple **D**ata)命令セットの拡張を用いてめっちゃはやくスキャンし、まずはマスクにマッチするものをmetadaga列を使ってスクリーニングする。SIMDは同一命令を複数CPUに投げる形式のマルチプロセッサなので、マスクして結果を返せっていう命令を各分割されたテーブルごとにやって集めるみたいな並列処理が行われているのだと思う。これで高速に候補を大きく絞ることができる。  
+**S**treaming **S**IMD **E**xtension a.k.a [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)というSIMD(**S**ingle **I**nstruction **M**ultiple **D**ata)命令セットの拡張を用いてめっちゃはやくスキャンし、まずはマスクにマッチするものをmetadata列を使ってスクリーニングする。~~SIMDは同一命令を複数CPUに投げる形式のマルチプロセッサなので、マスクして結果を返せっていう命令を各分割されたテーブルごとにやって集めるみたいな並列処理が行われているのだと思う~~(胡散臭いという指摘があったので消しました)。これで高速に候補を大きく絞ることができる。  
 その候補たちの中からH1も一致するやつをさがし、あったら発見。なかった新たな候補たちをprobeする。  
 ... というアルゴリズムが[swiss tables desige notes](https://abseil.io/about/design/swisstables)に書いてあるが正直よくわからないので、今度コードを読んでみる。
 
