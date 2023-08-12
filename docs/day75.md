@@ -84,7 +84,8 @@ class RefCounted : public subtle::RefCountedBase {
 解放時にstatic_cast<>で破壊できるようになってるだけだった。  
 しかもdefault traits使っているならただdeleteするだけ。delete演算子は`void operator delete (void* ptr)  noexcept` なので型情報いらなそう。
 多分Traitsで自前のDestroyを書けるようにしているんだと思う。  
-それだけ？
-TODO(hidehiko): それ以外にメリットありますか？
+~~それだけ？  
+TODO(hidehiko): それ以外にメリットありますか？~~  
+deleteする際、`RefCounted<T>`のデストラクタが呼ばれるが、それだけだと`T`のデストラクタは呼ばれない。そのために`T`型を受け取ってキャストする必要がある。(thanks to yhirano)  
 
 (デフォルトのTraitsでないやつを使っている子が1人だけいた。: [InvalidationSetDeleter](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:third_party/blink/renderer/core/css/invalidation/invalidation_set.cc;l=74;drc=b537cbde0c7c42da2ee730b286bfb1cc7735eb1a))
