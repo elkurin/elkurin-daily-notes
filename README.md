@@ -94,3 +94,5 @@ Day 75: [Curiously Recurring Template Pattern](/docs/day75.md)
 Day 76: [BrowserManager state transition](/docs/day76.md)  
 Day 77: [Wayland messages and Flush](/docs/day77.md)  
 Day 78: [atexit in Chromium](/docs/day78.md)  
+Day 79: [TabletState in Chromium](/docs/day79.md)  
+
