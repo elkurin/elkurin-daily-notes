@@ -109,3 +109,4 @@ Day 90: [アーキテクチャごとのコンパイラ最適化フラグ](/docs/
 Day 91: [グノーシアをクリアした感想](https://elkurin.hatenablog.com/entry/2023/08/25/010617)  
 Day 92: [Window Tree in Views](/docs/day92.md)  
 Day 93: [文字のイテレータ in Chromium](/docs/day93.md)  
+Day 94: [BUILDFLAG](/docs/day94.md)  
