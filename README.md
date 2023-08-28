@@ -110,3 +110,4 @@ Day 91: [グノーシアをクリアした感想](https://elkurin.hatenablog.com
 Day 92: [Window Tree in Views](/docs/day92.md)  
 Day 93: [文字のイテレータ in Chromium](/docs/day93.md)  
 Day 94: [BUILDFLAG](/docs/day94.md)  
+Day 95: [SequenceTaskRunner の Delete task](/docs/day95.md)  
