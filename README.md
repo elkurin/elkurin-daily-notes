@@ -125,4 +125,5 @@ Day 106: [はじめましての標準ライブラリたちPart2](/docs/day106.md
 Day 107: [WaylandEventWatcher](/docs/day107.md)  
 Day 108: [DeviceOwnership](/docs/day108.md)  
 Day 109: [波括弧初期化](/docs/day109.md)  
+Day 110: [LayoutManager](/docs/day110.md)  
 
