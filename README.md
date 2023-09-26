@@ -128,4 +128,4 @@ Day 109: [波括弧初期化](/docs/day109.md)
 Day 110: [LayoutManager](/docs/day110.md)  
 Day 111: [Even in Chromium](docs/day111.md)  
 Day 112: [User Type in ChromeOS and Lacros Launching](/docs/day112.md)  
-
+Day 113: [HUD Display](/docs/day113.md)  
