@@ -130,4 +130,7 @@ Day 111: [Even in Chromium](docs/day111.md)
 Day 112: [User Type in ChromeOS and Lacros Launching](/docs/day112.md)  
 Day 113: [HUD Display](/docs/day113.md)  
 Day 114: [errno を ChromiumのLOGで出力するには](/docs/day114.md)  
+Day 115: [base::debug::Alias](/docs/day115.md)  
+Day 116: [ebuild dependency](/docs/day116.md)  
+Day 117: [StrCat in Chromium](/docs/day117.md)  
 
