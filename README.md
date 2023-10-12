@@ -141,4 +141,5 @@ Day 122: [Immersive Mode Handling](/docs/day122.md)
 Day 123: [UI Property](/docs/day123.md)  
 Day 124: [GURL](/docs/day124.md)  
 Day 125: [Wayland Server Initialization](/docs/day125.md)  
+Day 126: [LTOでのインライン展開](/docs/day126.md)  
 
