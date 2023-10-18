@@ -145,4 +145,5 @@ Day 126: [LTOでのインライン展開](/docs/day126.md)
 Day 127: [Border Paint on Linux](/docs/day127.md)  
 Day 128: [Button view](/docs/day128.md)  
 Day 129: [SSE](/docs/day129.md)  
+Day 130: [Border Paint on ChromeOS](/docs/day130.md)  
 
