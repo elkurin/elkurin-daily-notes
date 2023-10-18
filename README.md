@@ -142,4 +142,7 @@ Day 123: [UI Property](/docs/day123.md)
 Day 124: [GURL](/docs/day124.md)  
 Day 125: [Wayland Server Initialization](/docs/day125.md)  
 Day 126: [LTOでのインライン展開](/docs/day126.md)  
+Day 127: [Border Paint on Linux](/docs/day127.md)  
+Day 128: [Button view](/docs/day128.md)  
+Day 129: [SSE](/docs/day129.md)  
 
